@@ -4,7 +4,7 @@ There are a few dependencies, but the script will check if they are installed, i
 you. This was designed to do all the work for you, all you have to do is make a couple of selections, sit back, watch, and input password when prompted.
 
 # Distros included
-As of right now, this script is available for use on Void linux, and on Arch based distros. In the future it will be extended to include Debian as well.
+As of right now, this script is available for use on Void linux glibc (have not tried musl), and on Arch based distros. In the future it will be extended to include Debian as well.
 
 # Window Managers
 This script only includes two window managers at this time, Herbstluftwm and BerryWM. In the future I plan to add more so keep an eye out.
