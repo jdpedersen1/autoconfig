@@ -103,7 +103,7 @@ yay_install() {
         if [[ "$answer2" == [Y/y] ]];
         then
             sudo pacman -S base-devel
-            mkdir $HOME/.local && cd $HOME/.local || exit
+            cd $HOME/.local || exit
             sudo git clone https://aur.archlinux.org/yay-git.git
             sudo chown -R $USER/$USER ./yay-git
             cd yay-git || exit
@@ -145,7 +145,8 @@ programs_install() {
                 sudo xbps-install -S dmenu kitty xdotool polybar sxhkd nitrogen xwallpaper fzf font-awesome;
                 cd $HOME/.local/
                 git clone https://github.com/salman-abedin/devour.git && cd devour && sudo make install && cd $HOME/.local
- 		        box1 "for dmenu to work correctly you need to have my config"
+ 		        box1 "for dmenu to work correctly you need to have my config installed"
+                box "HOWEVER IF YOU HAVE ALREADY RUN THIS SCRIPT AND INSTALLED MY DMENU; DO NOT TRY TO INSTALL AGAIN, THE SCRIPT WILL FAIL"
 		        box2 "do you want to install my dmenu config? Y/N           "
 		        read -r choice
 		        if [[ "$choice" == [Y/y] ]]; then
@@ -153,23 +154,23 @@ programs_install() {
        			    cd dmenu && sudo make clean install
 		        else
 			        box " you will need to edit all dmenu keybindings in config and scripts to match your dmenu config"
+                    box "UNLESS YOU HAVE RUN THIS SCRIPT AND INSTALLED DMENU ONCE ALREADY, IF SO YOU ARE GOOD"
 		        fi
                 ;;
             pacman)
                 yay_install
                 yay -S dmenu kitty nitrogen xwallpaper xdotool polybar sxhkd ttf-font-awesome fzf devour;
-                box1 "for dmenu to work correctly you need to have my config"
+ 		        box1 "for dmenu to work correctly you need to have my config installed"
+                box "HOWEVER IF YOU HAVE ALREADY RUN THIS SCRIPT AND INSTALLED MY DMENU; DO NOT TRY TO INSTALL AGAIN, THE SCRIPT WILL FAIL"
 		        box2 "do you want to install my dmenu config? Y/N           "
 		        read -r choice
 		        if [[ "$choice" == [Y/y] ]]; then
-                    cd $HOME/.local
-                    git clone https://github.com/jdpedersen1/dmenu.git
-                    cd dmenu && sudo make clean install
-                else
-                    box1 "to allow dmenu to work correctly please edit all dmenu entries  " 
-                    box2 "in my scripts and configs to match your current dmenu config and"
-                    box3 "patch setup, otherwise dmenu will not launch                    "
-                fi
+			        git clone https://github.com/jdpedersen1/dmenu.git
+       			    cd dmenu && sudo make clean install
+		        else
+			        box " you will need to edit all dmenu keybindings in config and scripts to match your dmenu config"
+                    box "UNLESS YOU HAVE RUN THIS SCRIPT AND INSTALLED DMENU ONCE ALREADY, IF SO YOU ARE GOOD"
+		        fi
                 ;;
         esac
         return  
