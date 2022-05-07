@@ -24,7 +24,7 @@ mod + shift + q
 # Clean up notes
 
 ### This will install Kitty terminal emulator, dmenu, devour, xdotool, polybar, sxhkd, xwallpaper, nitrogen, fzf, and font-awesome. If you do not want those installed, then you can comment out the programs_install function in the select statement of the script but this will break the config and you will have to edit heavily to get to work on your system which defeats the purpose of the script so i advise against it, if you do not want those programs installed, maybe this script is not for you.
-
+### If you decide to run this script multiple times and you successfully installed dmenu via the script the first time, you have to decline dmenu on any future installs because the script will fail due to dmenu already present in the location that the script is attempting to install it. 
 After intsall plesase reboot system, I have run into a few issues with display resolution looking funky if not rebooing before logging into new window
 manager. Also I attempted to take into account every scenario that I possibly could, however; I can not account for every individuals system or setup, so I
 cannot guarantee this will work on your system. I tested on multiple VMs and on hardware on ArcoLinux, Artix linux, and Void glibc, not musl, and aside from
