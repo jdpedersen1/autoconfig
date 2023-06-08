@@ -78,7 +78,7 @@ src_pkg_repo_install() {
         box3 "Please be patient while this may take a minute"
         sleep 3
         sudo xbps-install -S util-linux tar coreutils binutils
-        mkdir $HOME/.local/pkgs && cd $HOME/.local/pkgs || exit
+        mkdir "$HOME"/.local/pkgs && cd "$HOME"/.local/pkgs || exit
         git clone https://github.com/void-linux/void-packages.git
         cd void-packages || exit
         ./xbps-src binary-bootstrap;
@@ -97,18 +97,18 @@ yay_install() {
     then
         box "yay found, you are good to go"
     else
-        box "To continue this script, yay will be installed into your $HOME/.local dir"
+        box "To continue this script, yay will be installed into your "$HOME"/.local dir"
         box "Would you like to continue? Y/n"
         read -r answer2
         if [[ "$answer2" == [Y/y] ]];
         then
             sudo pacman -S base-devel
-            cd $HOME/.local || exit
+            cd "$HOME"/.local || exit
             sudo git clone https://aur.archlinux.org/yay-git.git
             sudo chown -R $USER/$USER ./yay-git
             cd yay-git || exit
             makepkg -si
-            break
+            return
         else
             box "This script will not work without yay, sorry, exiting now"
             exit
@@ -121,12 +121,17 @@ yay_install() {
 ### CHECK FOR .local DIR ###
 #--------------------------#
 dir_check() {
-    box "Checking for required dir"
-    if [ -d $HOME/.local ]; then
+    box "Checking for required dirs"
+    if [ -d "$HOME"/.local ]; then
         box "Dir found, lets begin"
     else
         box "dir not found, creating now"
-        mkdir $HOME/.local
+        mkdir "$HOME"/.local
+    fi
+    if [ -d "$HOME"/.config ]; then
+        box "Dir found"
+    else
+        mkdir "$HOME"/.config
     fi
 }
 
@@ -143,8 +148,8 @@ programs_install() {
 		        sudo xbps-install -S base-devel libX11-devel libXft-devel libXinerama-devel freetype-devel fontconfig-devel
                 src_pkg_repo_install
                 sudo xbps-install -S dmenu kitty xdotool polybar sxhkd nitrogen xwallpaper fzf font-awesome;
-                cd $HOME/.local/
-                git clone https://github.com/salman-abedin/devour.git && cd devour && sudo make install && cd $HOME/.local
+                cd "$HOME"/.local/
+                git clone https://github.com/salman-abedin/devour.git && cd devour && sudo make install && cd "$HOME"/.local
  		        box1 "for dmenu to work correctly you need to have my config installed"
                 box "HOWEVER IF YOU HAVE ALREADY RUN THIS SCRIPT AND INSTALLED MY DMENU; DO NOT TRY TO INSTALL AGAIN, THE SCRIPT WILL FAIL"
 		        box2 "do you want to install my dmenu config? Y/N           "
@@ -182,7 +187,7 @@ programs_install() {
 ### FUNCTION TO INSTALL HERBSTLUFTWM ###
 #--------------------------------------#
 install_herbst() {
-    if [ -d $HOME/.config/herbstluftwm ]; then
+    if [ -d "$HOME"/.config/herbstluftwm ]; then
         box "It seems Herbstluftwm is already installed, please verify and try again"
         exit
     else
@@ -207,7 +212,7 @@ install_herbst() {
 ### FUNCTION TO INSTALL BERRYWM ###
 #---------------------------------#
 install_berry() {
-    if [ -d $HOME/.config/berry ]; then
+    if [ -d "$HOME"/.config/berry ]; then
         box "It seems BerryWm may already be installed, please verify and try again"
         exit
     else
@@ -236,20 +241,24 @@ herbst_file_fetch() {
         type -P "$pkg_mgr" &> /dev/null || continue
         case $pkg_mgr in
             xbps-install)
-                cd $HOME/.config/
-                git clone https://github.com/jdpedersen1/herbstluftwm.git
-                cd $HOME/.config/herbstluftwm
-                mv polybar_void_config $HOME/.config/herbstluftwm/polybar_config && rm polybar_arch_config
-                chmod -R +x $HOME/.config/herbstluftwm/
+                if [ ! -d "$HOME"/.config ]
+                then
+                    mkdir "$HOME"/.config
+                fi
+                cd "$HOME"/.config/
+                git clone https://github.com/jdpedersen1/Void-Herbstluftwm.git
+                cd "$HOME"/.config/herbstluftwm
+                mv polybar_void_config "$HOME"/.config/herbstluftwm/polybar_config && if [ -f polybar_arch_config ]; then rm polybar_arch_config; fi
+                chmod -R +x "$HOME"/.config/herbstluftwm/
                 sudo mv herbst-logout.sh launch.sh scratch scratch2 scratchpad vsp2 /usr/local/bin/
                 ;;
             pacman)
-                cd $HOME/.config/
+                cd "$HOME"/.config/
                 git clone https://github.com/jdpedersen1/herbstluftwm.git
-                cd $HOME/.config/herbstluftwm
-                mv polybar_arch_config $HOME/.config/herbstluftwm/polybar_config && rm polybar_void_config
-                chmod -R +x $HOME/.config/herbstluftwm/
-                rm $HOME/.config/herbstluftwm/vsp2
+                cd "$HOME"/.config/herbstluftwm
+                mv polybar_arch_config "$HOME"/.config/herbstluftwm/polybar_config && rm polybar_void_config
+                chmod -R +x "$HOME"/.config/herbstluftwm/
+                rm "$HOME"/.config/herbstluftwm/vsp2
                 sudo mv herbst-logout.sh launch.sh scratch scratch2 scratchpad /usr/local/bin
                 ;;
         esac
@@ -265,19 +274,19 @@ berry_file_fetch() {
         type -P "$pkg_mgr" &> /dev/null || continue
         case $pkg_mgr in
             xbps-install)
-                cd $HOME/.config/
+                cd "$HOME"/.config/
                 git clone https://gitlab.com/jped/berry.git
-                cd $HOME/.config/berry
-                mv polybar_void_config $HOME/.config/berry/polybar_config && rm polybar_arch_config
-                chmod -R +x $HOME/.config/berry/
+                cd "$HOME"/.config/berry
+                mv polybar_void_config "$HOME"/.config/berry/polybar_config && rm polybar_arch_config
+                chmod -R +x "$HOME"/.config/berry/
                 sudo mv berry-logout.sh vsp3 /usr/local/bin/
                 ;;
             pacman)
-                cd $HOME/.config/
+                cd "$HOME"/.config/
                 git clone https://gitlab.com/jped/berry.git
-                cd $HOME/.config/berry
-                mv polybar_arch_config $HOME/.config/berry/polybar_config && rm polybar_void_config
-                chmod -R +x $HOME/.config/berry/
+                cd "$HOME"/.config/berry
+                mv polybar_arch_config "$HOME"/.config/berry/polybar_config && rm polybar_void_config
+                chmod -R +x "$HOME"/.config/berry/
                 sudo mv berry-logout.sh /usr/local/bin/
                 rm vsp3
                 ;;
@@ -418,7 +427,7 @@ select wm in "${wms[@]}"; do
             install_berry
             berry_file_fetch
             box1 "If you use a display manager this script is able to create an xsession entry "
-            box2 "however if you use startx, you will be responsible for editing yout .xinitrc "
+            box2 "however if you use startx, you will be responsible for editing your .xinitrc "
             box3 "Do you use a display manager? Y/N                                            "
             read -r dm
             if [[ "$dm" == [Y/y] ]]; then
