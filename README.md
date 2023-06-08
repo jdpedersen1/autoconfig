@@ -1,4 +1,7 @@
 # autoconfig
+
+# SCRIPT IS NOT WORKING AT THE MOMENT, IN THE PROCESS OF FIXING, PLEASE DONT USE
+
 Script that will automatically install and configure versions of my system setup with different window managers. Contains all basic necessary programs to get system up and working.
 There are a few dependencies, but the script will check if they are installed, if they are, great!, if they are not on your system, it will install them for
 you. This was designed to do all the work for you, all you have to do is make a couple of selections, sit back, watch, and input password when prompted.
