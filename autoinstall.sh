@@ -197,6 +197,7 @@ install_herbst() {
             case $pkg_mgr in
                 xbps-install)
                     sudo xbps-install -S herbstluftwm
+                    mkdir ~/.config/herbstluftwm
                     ;;
                 pacman)
                     sudo pacman -S herbstluftwm
